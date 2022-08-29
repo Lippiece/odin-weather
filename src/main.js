@@ -6,9 +6,16 @@ import {
 } from "@emotion/css";
 
 injectGlobal`
-  @import '@primer/css/utilities/index.scss';
-
   :root {
+    --color-fg: hsl( 15deg 100% 88% / 75% );
+    --color-fg-muted: hsl( 15deg 100% 88% / 60% );
+    --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
+    --color-fg-accent: hsl( 200deg 100% 70% / 100% );
+    --color-fg-success: hsl( 130deg 50% 50% / 100% );
+
+    --color-bg: hsl( 0deg 0% 13% );
+    --color-bg-overlay: hsl( 0deg 0% 25% );
+    --color-bg-emphasis: hsl( 0deg 0% 35% );
     font-family: 'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 `;
@@ -18,9 +25,9 @@ const body    = document.querySelector( "body" )
     width: 100vw;
     height: 100vh;
 
-    color: var( --color-fg-default );
+    color: var( --color-fg );
 
-    background-color: var( --color-bg-default );
+    background-color: var( --color-bg );
   ` );
 const content = document.querySelector( "#content" )
   .addStyles( css`
@@ -31,7 +38,6 @@ const content = document.querySelector( "#content" )
   padding: 2em;
 
   * {
-    /* color: inherit; */
     font-family: inherit;
   }
 
@@ -52,11 +58,10 @@ const content = document.querySelector( "#content" )
     button {
       padding: 0.5em;
 
-      color: var( --color-fg-default );
+      color: var( --color-fg );
 
       background-color: var( --color-bg-overlay );
       border: none;
-      border-radius: var( --border-radius );
       cursor: pointer;
 
       &:hover {
@@ -81,8 +86,7 @@ const content = document.querySelector( "#content" )
       color: var( --primary );
 
       background-color: var( --color-bg-overlay );
-      border-color: var( --color-fg-default );
-      border-radius: var( --border-radius-1 );
+      border: none;
     }
   }
 ` );
