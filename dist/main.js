@@ -2520,6 +2520,109 @@ function combine (array, callback) {
 }
 
 
+/***/ }),
+
+/***/ "./src/current-weather.js":
+/*!********************************!*\
+  !*** ./src/current-weather.js ***!
+  \********************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const key = "1c9287e01c2d0b797dcff3a182cab997";
+/**
+ * It fetches the weather data for
+ * a given place and then displays the conditions
+ * @param place - The name of the city to get the weather for.
+ * @param parent - The parent element to append the data to.
+ */
+const requestWeather = async function( place, parent ) {
+
+  try {
+
+    const response = await fetch( `https://api.openweathermap.org/data/2.5/weather?q=${ place }&units=metric&appid=${ key }` );
+    await displayConditions( response, parent );
+
+  } catch ( error ) { console.error( error ) }
+
+};
+/**
+ * It takes the response from the API, and then it
+ * creates a bunch of HTML elements and appends them to the DOM
+ * @param response - the response object from the fetch request
+ * @param parent - the parent element to which apply the results
+ */
+const displayConditions = async function( response, parent ) {
+
+  const {
+    weather,
+    main,
+    wind,
+    name: cityName,
+  } = await response.json();
+  const {
+    temp: temperature,
+    feels_like: feelsLike,
+    humidity: humidityPercentage,
+  } = main;
+  const weatherDescription = weather[0].description;
+  const windSpeed          = wind.speed;
+  const weatherIcon        = weather[0].icon;
+  const weatherIconUrl     = `http://openweathermap.org/img/wn/${ weatherIcon }@2x.png`;
+  const weatherIconElement = document.createElement( "img" );
+  weatherIconElement.setAttribute( "src", weatherIconUrl );
+  weatherIconElement.setAttribute( "alt", weatherDescription );
+
+  const { output, resultNodes } = packResultsToNode(
+    parent,
+    cityName,
+    weatherDescription,
+    temperature,
+    feelsLike,
+    humidityPercentage,
+    windSpeed
+  );
+
+  // append the above elements to the results div
+  output.replaceChildren( weatherIconElement, ...resultNodes );
+
+};
+/**
+ * It takes a bunch of weather data, and returns a DOM node containing that data
+ * @returns An object with two properties: resultNodes and results.
+ */
+const packResultsToNode = function( parent, cityName, weatherDescription, temperature, feelsLike, humidityPercentage, windSpeed ) {
+
+  const output = document.createElement( "div" )
+    .addId( "output" );
+  parent.replaceChildren( output );
+
+  const resultStrings = [
+    String( cityName ),
+    String( weatherDescription ),
+    `Temperature: ${ temperature }°C`,
+    `Feels like ${ feelsLike }°C`,
+    `Humidity: ${ humidityPercentage }%`,
+    `Wind speed: ${ windSpeed }m/s`,
+  ];
+  const resultNodes   = resultStrings.map( string => {
+
+    const result = document.createElement( "p" );
+    result.append( string );
+
+    return result;
+
+  } );
+
+  return { output, resultNodes };
+
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (requestWeather);
+
+
 /***/ })
 
 /******/ 	});
@@ -2587,6 +2690,9 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _adipiscing_image_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @adipiscing/image-slider */ "./node_modules/@adipiscing/image-slider/src/main/main.js");
 /* harmony import */ var _emotion_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @emotion/css */ "./node_modules/@emotion/css/dist/emotion-css.esm.js");
+/* harmony import */ var _current_weather_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./current-weather.js */ "./src/current-weather.js");
+
+
 
 
 
@@ -2628,11 +2734,15 @@ const content = document.querySelector( "#content" )
   }
 
   h1 {
+    font-size: 2.5em;
+  }
+
+  h2 {
     font-size: 1.5em;
   }
 
-  /* input {
-    width: 30%;
+  /* p {
+
   } */
 
   form {
@@ -2675,6 +2785,14 @@ const content = document.querySelector( "#content" )
       border: none;
     }
   }
+
+  #results {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+  }
 ` );
 const header  = document.createElement( "h1" )
   .addId( "header" )
@@ -2700,6 +2818,15 @@ const submitButton = document.createElement( "button" )
   .addId( "submit-button" )
   .appendTo( form );
 submitButton.append( "Submit" );
+const results = document.createElement( "div" )
+  .addId( "results" )
+  .appendTo( content );
+submitButton.addEventListener( "click", event => {
+
+  event.preventDefault();
+  (0,_current_weather_js__WEBPACK_IMPORTED_MODULE_2__["default"])( queryInput.value, results );
+
+} );
 
 })();
 

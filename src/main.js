@@ -5,6 +5,8 @@ import {
   injectGlobal,
 } from "@emotion/css";
 
+import requestWeather from "./current-weather.js";
+
 injectGlobal`
   :root {
     --color-fg: hsl( 15deg 100% 88% / 75% );
@@ -42,11 +44,15 @@ const content = document.querySelector( "#content" )
   }
 
   h1 {
+    font-size: 2.5em;
+  }
+
+  h2 {
     font-size: 1.5em;
   }
 
-  /* input {
-    width: 30%;
+  /* p {
+
   } */
 
   form {
@@ -89,6 +95,14 @@ const content = document.querySelector( "#content" )
       border: none;
     }
   }
+
+  #results {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+  }
 ` );
 const header  = document.createElement( "h1" )
   .addId( "header" )
@@ -114,3 +128,12 @@ const submitButton = document.createElement( "button" )
   .addId( "submit-button" )
   .appendTo( form );
 submitButton.append( "Submit" );
+const results = document.createElement( "div" )
+  .addId( "results" )
+  .appendTo( content );
+submitButton.addEventListener( "click", event => {
+
+  event.preventDefault();
+  requestWeather( queryInput.value, results );
+
+} );
