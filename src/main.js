@@ -6,6 +6,7 @@ import {
 } from "@emotion/css";
 
 import requestWeather from "./current-weather.js";
+import requestForecast from "./forecast.js";
 
 injectGlobal`
   :root {
@@ -144,14 +145,14 @@ const content = document.querySelector( "#content" )
 const header  = document.createElement( "h1" )
   .addId( "header" )
   .appendTo( content );
-header.append( "Hello World" );
+header.append( "Weather" );
 const description = document.createElement( "p" )
   .addId( "description" )
   .appendTo( content )
   .addStyles( css`
     text-align: center;
   ` );
-description.append( "This is a simple example of a web application." );
+description.append( "What's the weather like today?" );
 const form       = document.createElement( "form" )
   .addId( "form" )
   .appendTo( content );
@@ -160,17 +161,43 @@ const queryInput = document.createElement( "input" )
   .appendTo( form );
 queryInput.setAttribute( "type", "text" );
 queryInput.setAttribute( "name", "query" );
-queryInput.setAttribute( "placeholder", "Search..." );
-const submitButton = document.createElement( "button" )
-  .addId( "submit-button" )
+queryInput.setAttribute( "placeholder", "City" );
+const submitCurrentButton = document.createElement( "button" )
+  .addId( "current-button" )
   .appendTo( form );
-submitButton.append( "Submit" );
-const results = document.createElement( "div" )
-  .addId( "results" )
+submitCurrentButton.append( "Now" );
+const submitForecastButton = document.createElement( "button" )
+  .addId( "forecast-button" )
+  .appendTo( form );
+submitForecastButton.append( "Forecast" );
+const weatherContainer = document.createElement( "div" )
+  .addId( "weather-container" )
   .appendTo( content );
-submitButton.addEventListener( "click", event => {
+
+// current weather
+const outputCurrent           = document.createElement( "div" )
+  .addId( "output-current" )
+  .appendTo( weatherContainer );
+const weatherIconCurrent      = document.createElement( "div" )
+  .addId( "weather-icon" )
+  .appendTo( outputCurrent );
+const detailsContainerCurrent = document.createElement( "div" )
+  .addId( "current-details" )
+  .appendTo( outputCurrent );
+
+// forecast
+const outputForecast = document.createElement( "div" )
+  .addId( "output-forecast" )
+  .appendTo( weatherContainer );
+submitCurrentButton.addEventListener( "click", event => {
 
   event.preventDefault();
-  requestWeather( queryInput.value, results );
+  requestWeather( queryInput.value, weatherContainer );
+
+} );
+submitForecastButton.addEventListener( "click", event => {
+
+  event.preventDefault();
+  requestForecast( queryInput.value, weatherContainer );
 
 } );
