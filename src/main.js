@@ -103,6 +103,43 @@ const content = document.querySelector( "#content" )
     align-items: center;
     justify-content: center;
   }
+
+  #output {
+    display: flex;
+    flex-direction: column;
+
+    font-size: 1.2em;
+    font-variant: all-small-caps;
+
+    img {
+
+      margin-bottom: -2em;
+
+      transform: scale( 0.5 );
+
+      transition: transform 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale( 0.6 );
+
+        transition: transform 0.2s ease-in-out;
+      }
+    }
+  }
+
+  #current-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: center;
+    justify-content: center;
+
+    & :first-child {
+      color: var( --color-fg-success );
+      font-size: 1.5em;
+      text-shadow: 0 0 0.25em var( --color-fg-success );
+    }
+  }
 ` );
 const header  = document.createElement( "h1" )
   .addId( "header" )
