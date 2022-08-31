@@ -2557,6 +2557,7 @@ const requestWeather = async function( place, parent ) {
  */
 const displayConditions = async function( response, parent ) {
 
+  /* Getting the data out */
   const {
     weather,
     main,
@@ -2570,36 +2571,31 @@ const displayConditions = async function( response, parent ) {
   } = main;
   const weatherDescription = weather[0].description;
   const windSpeed          = wind.speed;
-  const weatherIcon        = weather[0].icon;
-  const weatherIconUrl     = `http://openweathermap.org/img/wn/${ weatherIcon }@2x.png`;
-  const weatherIconElement = document.createElement( "img" );
-  weatherIconElement.setAttribute( "src", weatherIconUrl );
-  weatherIconElement.setAttribute( "alt", weatherDescription );
-
-  const { output, resultNodes } = packResultsToNode(
+  const weatherIconElement = createWeatherIcon( weather, weatherDescription );
+  packResultsToNode(
     parent,
     cityName,
+    weatherIconElement,
     weatherDescription,
     temperature,
     feelsLike,
     humidityPercentage,
     windSpeed
   );
-
-  // append the above elements to the results div
-  output.replaceChildren( weatherIconElement, ...resultNodes );
+  /**
+   * append the above elements to a container
+   * and append that to the parent
+   */
 
 };
 /**
  * It takes a bunch of weather data, and returns a DOM node containing that data
  * @returns An object with two properties: resultNodes and results.
  */
-const packResultsToNode = function( parent, cityName, weatherDescription, temperature, feelsLike, humidityPercentage, windSpeed ) {
+const packResultsToNode = function( parent, cityName, weatherIconElement, weatherDescription, temperature, feelsLike, humidityPercentage, windSpeed ) {
 
-  const output = document.createElement( "div" )
-    .addId( "output" );
-  parent.replaceChildren( output );
-
+  const outputCurrent = document.createElement( "div" )
+    .addId( "output-current" );
   const resultStrings = [
     String( cityName ),
     String( weatherDescription ),
@@ -2616,11 +2612,145 @@ const packResultsToNode = function( parent, cityName, weatherDescription, temper
     return result;
 
   } );
+  const detailsContainer = document.createElement( "div" )
+    .addId( "current-details" );
+  detailsContainer.replaceChildren( ...resultNodes );
+  parent.querySelector( "#weather-icon" )
+    .replaceWith( weatherIconElement );
+  parent.querySelector( "#current-details" )
+    .replaceWith( detailsContainer );
+
+  return { outputCurrent, resultNodes };
+
+};
+const createWeatherIcon = function( weather, weatherDescription ) {
+
+  const weatherIcon        = weather[0].icon;
+  const weatherIconUrl     = `http://openweathermap.org/img/wn/${ weatherIcon }@2x.png`;
+  const weatherIconElement = document.createElement( "img" )
+    .addId( "weather-icon" );
+  weatherIconElement.setAttribute( "src", weatherIconUrl );
+  weatherIconElement.setAttribute( "alt", weatherDescription );
+
+  return weatherIconElement;
+
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (requestWeather);
+
+
+/***/ }),
+
+/***/ "./src/forecast.js":
+/*!*************************!*\
+  !*** ./src/forecast.js ***!
+  \*************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const key             = "1c9287e01c2d0b797dcff3a182cab997";
+const requestForecast = async function( place, parent ) {
+
+  try {
+
+    const response = await fetch( `https://api.openweathermap.org/data/2.5/forecast?q=${ place }&units=metric&appid=${ key }` );
+    const { list } = await response.json();
+    /**
+     * list is an array of objects, each object has a timestamp property
+     *
+     * timestamp example:
+     *
+     * clouds:
+     * {all: 23}
+     * dt:
+     * 1661958000
+     * dt_txt:
+     * '2022-08-31 15:00:00'
+     * main:
+     * {temp: 18.82, feels_like: 18.12, temp_min: 18.41, temp_max: 18.82, pressure: 1022, …}
+     * pop:
+     * 0.2
+     * rain:
+     * {3h: 0.13}
+     * sys:
+     * {pod: 'd'}
+     * visibility:
+     * 10000
+     * weather:
+     * (1) [{…}]
+     * wind:
+     * {speed: 6.56, deg: 358, gust: 7.38}
+     */
+    displayConditions( list, parent );
+
+  } catch ( error ) { console.error( error ) }
+
+};
+const displayConditions = async function( list, parent ) {
+
+  list.map( timestamp => renderTimestamp( timestamp ) );
+
+};
+const renderTimestamp   = function( timestamp ) {
+
+  const {
+    weather,
+    main,
+    wind: { speed: windSpeed },
+    dt_txt: dateTime,
+  } = timestamp;
+  const {
+    temp: temperature,
+    feels_like: feelsLike,
+    humidity: humidityPercentage,
+  } = main;
+  const weatherDescription      = weather[0].description;
+  const { output, resultNodes } = packResultsToNode(
+    parent,
+    dateTime,
+    weatherDescription,
+    temperature,
+    feelsLike,
+    humidityPercentage,
+    windSpeed
+  );
+
+};
+const packResultsToNode = function( parent, cityName, weatherDescription, temperature, feelsLike, humidityPercentage, windSpeed, dateTime ) {
+
+  const output      = document.createElement( "div" );
+  const resultNodes = [
+    document.createElement( "h2" )
+      .addText( cityName ),
+    document.createElement( "h3" )
+      .addText( weatherDescription ),
+    document.createElement( "h3" )
+      .addText( `${ temperature }°C` ),
+    document.createElement( "h3" )
+      .addText( `Feels like ${ feelsLike }°C` ),
+    document.createElement( "h3" )
+      .addText( `${ humidityPercentage }% humidity` ),
+    document.createElement( "h3" )
+      .addText( `${ windSpeed } m/s wind speed` ),
+    document.createElement( "h3" )
+      .addText( String( dateTime ) ),
+  ];
 
   return { output, resultNodes };
 
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (requestWeather);
+const createWeatherIcon = function( weather, weatherDescription ) {
+
+  const weatherIcon = document.createElement( "img" );
+  weatherIcon.setAttribute( "src", `https://openweathermap.org/img/w/${ weather[0].icon }.png` );
+  weatherIcon.setAttribute( "alt", weatherDescription );
+
+  return weatherIcon;
+
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (requestForecast);
 
 
 /***/ })
@@ -2691,6 +2821,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _adipiscing_image_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @adipiscing/image-slider */ "./node_modules/@adipiscing/image-slider/src/main/main.js");
 /* harmony import */ var _emotion_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @emotion/css */ "./node_modules/@emotion/css/dist/emotion-css.esm.js");
 /* harmony import */ var _current_weather_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./current-weather.js */ "./src/current-weather.js");
+/* harmony import */ var _forecast_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./forecast.js */ "./src/forecast.js");
+
 
 
 
@@ -2793,18 +2925,55 @@ const content = document.querySelector( "#content" )
     align-items: center;
     justify-content: center;
   }
+
+  #output {
+    display: flex;
+    flex-direction: column;
+
+    font-size: 1.2em;
+    font-variant: all-small-caps;
+
+    img {
+
+      margin-bottom: -2em;
+
+      transform: scale( 0.5 );
+
+      transition: transform 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale( 0.6 );
+
+        transition: transform 0.2s ease-in-out;
+      }
+    }
+  }
+
+  #current-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: center;
+    justify-content: center;
+
+    & :first-child {
+      color: var( --color-fg-success );
+      font-size: 1.5em;
+      text-shadow: 0 0 0.25em var( --color-fg-success );
+    }
+  }
 ` );
 const header  = document.createElement( "h1" )
   .addId( "header" )
   .appendTo( content );
-header.append( "Hello World" );
+header.append( "Weather" );
 const description = document.createElement( "p" )
   .addId( "description" )
   .appendTo( content )
   .addStyles( _emotion_css__WEBPACK_IMPORTED_MODULE_1__.css`
     text-align: center;
   ` );
-description.append( "This is a simple example of a web application." );
+description.append( "What's the weather like today?" );
 const form       = document.createElement( "form" )
   .addId( "form" )
   .appendTo( content );
@@ -2813,18 +2982,44 @@ const queryInput = document.createElement( "input" )
   .appendTo( form );
 queryInput.setAttribute( "type", "text" );
 queryInput.setAttribute( "name", "query" );
-queryInput.setAttribute( "placeholder", "Search..." );
-const submitButton = document.createElement( "button" )
-  .addId( "submit-button" )
+queryInput.setAttribute( "placeholder", "City" );
+const submitCurrentButton = document.createElement( "button" )
+  .addId( "current-button" )
   .appendTo( form );
-submitButton.append( "Submit" );
-const results = document.createElement( "div" )
-  .addId( "results" )
+submitCurrentButton.append( "Now" );
+const submitForecastButton = document.createElement( "button" )
+  .addId( "forecast-button" )
+  .appendTo( form );
+submitForecastButton.append( "Forecast" );
+const weatherContainer = document.createElement( "div" )
+  .addId( "weather-container" )
   .appendTo( content );
-submitButton.addEventListener( "click", event => {
+
+// current weather
+const outputCurrent           = document.createElement( "div" )
+  .addId( "output-current" )
+  .appendTo( weatherContainer );
+const weatherIconCurrent      = document.createElement( "div" )
+  .addId( "weather-icon" )
+  .appendTo( outputCurrent );
+const detailsContainerCurrent = document.createElement( "div" )
+  .addId( "current-details" )
+  .appendTo( outputCurrent );
+
+// forecast
+const outputForecast = document.createElement( "div" )
+  .addId( "output-forecast" )
+  .appendTo( weatherContainer );
+submitCurrentButton.addEventListener( "click", event => {
 
   event.preventDefault();
-  (0,_current_weather_js__WEBPACK_IMPORTED_MODULE_2__["default"])( queryInput.value, results );
+  (0,_current_weather_js__WEBPACK_IMPORTED_MODULE_2__["default"])( queryInput.value, weatherContainer );
+
+} );
+submitForecastButton.addEventListener( "click", event => {
+
+  event.preventDefault();
+  (0,_forecast_js__WEBPACK_IMPORTED_MODULE_3__["default"])( queryInput.value, weatherContainer );
 
 } );
 
