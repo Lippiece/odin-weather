@@ -23,6 +23,7 @@ const requestWeather = async function( place, parent ) {
  */
 const displayConditions = async function( response, parent ) {
 
+  /* Getting the data out */
   const {
     weather,
     main,
@@ -36,36 +37,31 @@ const displayConditions = async function( response, parent ) {
   } = main;
   const weatherDescription = weather[0].description;
   const windSpeed          = wind.speed;
-  const weatherIcon        = weather[0].icon;
-  const weatherIconUrl     = `http://openweathermap.org/img/wn/${ weatherIcon }@2x.png`;
-  const weatherIconElement = document.createElement( "img" );
-  weatherIconElement.setAttribute( "src", weatherIconUrl );
-  weatherIconElement.setAttribute( "alt", weatherDescription );
-
-  const { output, resultNodes } = packResultsToNode(
+  const weatherIconElement = createWeatherIcon( weather, weatherDescription );
+  packResultsToNode(
     parent,
     cityName,
+    weatherIconElement,
     weatherDescription,
     temperature,
     feelsLike,
     humidityPercentage,
     windSpeed
   );
-
-  // append the above elements to the results div
-  output.replaceChildren( weatherIconElement, ...resultNodes );
+  /**
+   * append the above elements to a container
+   * and append that to the parent
+   */
 
 };
 /**
  * It takes a bunch of weather data, and returns a DOM node containing that data
  * @returns An object with two properties: resultNodes and results.
  */
-const packResultsToNode = function( parent, cityName, weatherDescription, temperature, feelsLike, humidityPercentage, windSpeed ) {
+const packResultsToNode = function( parent, cityName, weatherIconElement, weatherDescription, temperature, feelsLike, humidityPercentage, windSpeed ) {
 
-  const output = document.createElement( "div" )
-    .addId( "output" );
-  parent.replaceChildren( output );
-
+  const outputCurrent = document.createElement( "div" )
+    .addId( "output-current" );
   const resultStrings = [
     String( cityName ),
     String( weatherDescription ),
@@ -82,8 +78,27 @@ const packResultsToNode = function( parent, cityName, weatherDescription, temper
     return result;
 
   } );
+  const detailsContainer = document.createElement( "div" )
+    .addId( "current-details" );
+  detailsContainer.replaceChildren( ...resultNodes );
+  parent.querySelector( "#weather-icon" )
+    .replaceWith( weatherIconElement );
+  parent.querySelector( "#current-details" )
+    .replaceWith( detailsContainer );
 
-  return { output, resultNodes };
+  return { outputCurrent, resultNodes };
+
+};
+const createWeatherIcon = function( weather, weatherDescription ) {
+
+  const weatherIcon        = weather[0].icon;
+  const weatherIconUrl     = `http://openweathermap.org/img/wn/${ weatherIcon }@2x.png`;
+  const weatherIconElement = document.createElement( "img" )
+    .addId( "weather-icon" );
+  weatherIconElement.setAttribute( "src", weatherIconUrl );
+  weatherIconElement.setAttribute( "alt", weatherDescription );
+
+  return weatherIconElement;
 
 };
 export default requestWeather;
