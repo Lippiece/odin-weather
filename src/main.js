@@ -6,7 +6,7 @@ import {
 } from "@emotion/css";
 
 import requestWeather from "./current-weather.js";
-import requestForecast from "./forecast.js";
+// import requestForecast from "./forecast.js";
 
 // injectGlobal`
 //   :root {
@@ -166,10 +166,10 @@ const submitCurrentButton = document.createElement( "button" )
   .addId( "current-button" )
   .appendTo( form );
 submitCurrentButton.append( "Now" );
-const submitForecastButton = document.createElement( "button" )
-  .addId( "forecast-button" )
-  .appendTo( form );
-submitForecastButton.append( "Forecast" );
+// const submitForecastButton = document.createElement( "button" )
+//   .addId( "forecast-button" )
+//   .appendTo( form );
+// submitForecastButton.append( "Forecast" );
 const weatherContainer = document.createElement( "div" )
   .addId( "weather-container" )
   .appendTo( content );
@@ -195,9 +195,9 @@ submitCurrentButton.addEventListener( "click", event => {
   requestWeather( queryInput.value, weatherContainer );
 
 } );
-submitForecastButton.addEventListener( "click", event => {
+// submitForecastButton.addEventListener( "click", event => {
 
-  event.preventDefault();
-  requestForecast( queryInput.value, weatherContainer );
+//   event.preventDefault();
+//   requestForecast( queryInput.value, weatherContainer );
 
-} );
+// } );

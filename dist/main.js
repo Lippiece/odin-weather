@@ -2765,13 +2765,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _adipiscing_image_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @adipiscing/image-slider */ "./node_modules/@adipiscing/image-slider/src/main/main.js");
 /* harmony import */ var _emotion_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @emotion/css */ "./node_modules/@emotion/css/dist/emotion-css.esm.js");
 /* harmony import */ var _current_weather_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./current-weather.js */ "./src/current-weather.js");
-/* harmony import */ var _forecast_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./forecast.js */ "./src/forecast.js");
 
 
 
 
 
-
+// import requestForecast from "./forecast.js";
 
 // injectGlobal`
 //   :root {
@@ -2931,10 +2930,10 @@ const submitCurrentButton = document.createElement( "button" )
   .addId( "current-button" )
   .appendTo( form );
 submitCurrentButton.append( "Now" );
-const submitForecastButton = document.createElement( "button" )
-  .addId( "forecast-button" )
-  .appendTo( form );
-submitForecastButton.append( "Forecast" );
+// const submitForecastButton = document.createElement( "button" )
+//   .addId( "forecast-button" )
+//   .appendTo( form );
+// submitForecastButton.append( "Forecast" );
 const weatherContainer = document.createElement( "div" )
   .addId( "weather-container" )
   .appendTo( content );
@@ -2960,12 +2959,12 @@ submitCurrentButton.addEventListener( "click", event => {
   (0,_current_weather_js__WEBPACK_IMPORTED_MODULE_2__["default"])( queryInput.value, weatherContainer );
 
 } );
-submitForecastButton.addEventListener( "click", event => {
+// submitForecastButton.addEventListener( "click", event => {
 
-  event.preventDefault();
-  (0,_forecast_js__WEBPACK_IMPORTED_MODULE_3__["default"])( queryInput.value, weatherContainer );
+//   event.preventDefault();
+//   requestForecast( queryInput.value, weatherContainer );
 
-} );
+// } );
 
 
 /***/ })
