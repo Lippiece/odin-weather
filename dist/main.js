@@ -2788,7 +2788,7 @@ const body    = document.querySelector( "body" )
     height: 100vh;
 
     color: var( --color-fg );
-   font-family: Rubik, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Rubik, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
     background-color: var( --color-bg );
   ` );
