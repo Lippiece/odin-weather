@@ -2788,7 +2788,7 @@ _emotion_css__WEBPACK_IMPORTED_MODULE_1__.injectGlobal`
   }
 `;
 
-const body    = document.querySelector( "body" )
+const body         = document.querySelector( "body" )
   .addStyles( _emotion_css__WEBPACK_IMPORTED_MODULE_1__.css`
     width: 100vw;
     height: 100vh;
@@ -2797,7 +2797,7 @@ const body    = document.querySelector( "body" )
 
     background-color: var( --color-bg );
   ` );
-const content = document.querySelector( "#content" )
+const content      = document.querySelector( "#content" )
   .addStyles( _emotion_css__WEBPACK_IMPORTED_MODULE_1__.css`
   display: flex;
   flex-direction: column;
@@ -2907,11 +2907,11 @@ const content = document.querySelector( "#content" )
     }
   }
 ` );
-const header  = document.createElement( "h1" )
+const header       = document.createElement( "h1" )
   .addId( "header" )
   .appendTo( content );
-header.append( "Weather" );
-const description = document.createElement( "p" )
+header.textContent = "Weather";
+const description  = document.createElement( "p" )
   .addId( "description" )
   .appendTo( content )
   .addStyles( _emotion_css__WEBPACK_IMPORTED_MODULE_1__.css`
