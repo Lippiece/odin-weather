@@ -8,22 +8,22 @@ import {
 import requestWeather from "./current-weather.js";
 import requestForecast from "./forecast.js";
 
-injectGlobal`
-  :root {
-    --color-fg: hsl( 15deg 100% 88% / 75% );
-    --color-fg-muted: hsl( 15deg 100% 88% / 60% );
-    --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
-    --color-fg-accent: hsl( 200deg 100% 70% / 100% );
-    --color-fg-success: hsl( 130deg 50% 50% / 100% );
+// injectGlobal`
+//   :root {
+//     --color-fg: hsl( 15deg 100% 88% / 75% );
+//     --color-fg-muted: hsl( 15deg 100% 88% / 60% );
+//     --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
+//     --color-fg-accent: hsl( 200deg 100% 70% / 100% );
+//     --color-fg-success: hsl( 130deg 50% 50% / 100% );
 
-    --color-bg: hsl( 0deg 0% 13% );
-    --color-bg-overlay: hsl( 0deg 0% 25% );
-    --color-bg-emphasis: hsl( 0deg 0% 35% );
-    font-family: 'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-`;
+//     --color-bg: hsl( 0deg 0% 13% );
+//     --color-bg-overlay: hsl( 0deg 0% 25% );
+//     --color-bg-emphasis: hsl( 0deg 0% 35% );
+//     font-family: 'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+//   }
+// `;
 
-const body    = document.querySelector( "body" )
+const body         = document.querySelector( "body" )
   .addStyles( css`
     width: 100vw;
     height: 100vh;
@@ -32,7 +32,7 @@ const body    = document.querySelector( "body" )
 
     background-color: var( --color-bg );
   ` );
-const content = document.querySelector( "#content" )
+const content      = document.querySelector( "#content" )
   .addStyles( css`
   display: flex;
   flex-direction: column;
@@ -142,11 +142,11 @@ const content = document.querySelector( "#content" )
     }
   }
 ` );
-const header  = document.createElement( "h1" )
+const header       = document.createElement( "h1" )
   .addId( "header" )
   .appendTo( content );
-header.append( "Weather" );
-const description = document.createElement( "p" )
+header.textContent = "Weather";
+const description  = document.createElement( "p" )
   .addId( "description" )
   .appendTo( content )
   .addStyles( css`
