@@ -2773,20 +2773,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_emotion_css__WEBPACK_IMPORTED_MODULE_1__.injectGlobal`
-  :root {
-    --color-fg: hsl( 15deg 100% 88% / 75% );
-    --color-fg-muted: hsl( 15deg 100% 88% / 60% );
-    --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
-    --color-fg-accent: hsl( 200deg 100% 70% / 100% );
-    --color-fg-success: hsl( 130deg 50% 50% / 100% );
+// injectGlobal`
+//   :root {
+//     --color-fg: hsl( 15deg 100% 88% / 75% );
+//     --color-fg-muted: hsl( 15deg 100% 88% / 60% );
+//     --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
+//     --color-fg-accent: hsl( 200deg 100% 70% / 100% );
+//     --color-fg-success: hsl( 130deg 50% 50% / 100% );
 
-    --color-bg: hsl( 0deg 0% 13% );
-    --color-bg-overlay: hsl( 0deg 0% 25% );
-    --color-bg-emphasis: hsl( 0deg 0% 35% );
-    font-family: 'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-`;
+//     --color-bg: hsl( 0deg 0% 13% );
+//     --color-bg-overlay: hsl( 0deg 0% 25% );
+//     --color-bg-emphasis: hsl( 0deg 0% 35% );
+//     font-family: 'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+//   }
+// `;
 
 const body         = document.querySelector( "body" )
   .addStyles( _emotion_css__WEBPACK_IMPORTED_MODULE_1__.css`
