@@ -8,22 +8,23 @@ import requestWeather from "./current-weather.js";
 
 const body    = document.querySelector( "body" )
   .addStyles( css`
-    --color-fg: hsl( 15deg 100% 88% / 75% );
-    --color-fg-muted: hsl( 15deg 100% 88% / 60% );
-    --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
-    --color-fg-accent: hsl( 200deg 100% 70% / 100% );
-    --color-fg-success: hsl( 130deg 50% 50% / 100% );
-    --color-bg: hsl( 0deg 0% 13% );
-    --color-bg-overlay: hsl( 0deg 0% 25% );
-    --color-bg-emphasis: hsl( 0deg 0% 35% );
+--color-fg: hsl( 15deg 100% 88% / 75% );
+  --color-fg-muted: hsl( 15deg 100% 88% / 60% );
+  --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
+  --color-fg-accent: hsl( 200deg 100% 70% / 100% );
+  --color-fg-success: hsl( 130deg 50% 50% / 100% );
+  --color-bg: hsl( 0deg 0% 13% );
+  --color-bg-overlay: hsl( 0deg 0% 25% );
+  --color-bg-emphasis: hsl( 0deg 0% 35% );
 
-    width: 100vw;
-    height: 100vh;
+  width: 100vw;
+  height: 100vh;
 
-    color: var( --color-fg );
-   font-family: Rubik, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var( --color-fg );
 
-    background-color: var( --color-bg );
+  /* font-family: Rubik, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+
+  background-color: var( --color-bg );
   ` );
 const content = document.querySelector( "#content" )
   .addStyles( css`
@@ -167,7 +168,6 @@ submitCurrentButton.append( "Now" );
 const weatherContainer = document.createElement( "div" )
   .addId( "weather-container" )
   .appendTo( content );
-
 // current weather
 const outputCurrent           = document.createElement( "div" )
   .addId( "output-current" )
@@ -178,7 +178,6 @@ const weatherIconCurrent      = document.createElement( "div" )
 const detailsContainerCurrent = document.createElement( "div" )
   .addId( "current-details" )
   .appendTo( outputCurrent );
-
 // forecast
 const outputForecast = document.createElement( "div" )
   .addId( "output-forecast" )
