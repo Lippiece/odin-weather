@@ -8,7 +8,7 @@ import requestWeather from "./current-weather.js";
 
 const body    = document.querySelector( "body" )
   .addStyles( css`
---color-fg: hsl( 15deg 100% 88% / 75% );
+  --color-fg: hsl( 15deg 100% 88% / 75% );
   --color-fg-muted: hsl( 15deg 100% 88% / 60% );
   --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
   --color-fg-accent: hsl( 200deg 100% 70% / 100% );
@@ -22,7 +22,7 @@ const body    = document.querySelector( "body" )
 
   color: var( --color-fg );
 
-  /* font-family: Rubik, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+  font-family: Rubik, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
   background-color: var( --color-bg );
   ` );

@@ -2640,121 +2640,6 @@ const createWeatherIcon = function( weather, weatherDescription ) {
 
 /***/ }),
 
-/***/ "./src/forecast.js":
-/*!*************************!*\
-  !*** ./src/forecast.js ***!
-  \*************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-const key             = "1c9287e01c2d0b797dcff3a182cab997";
-const requestForecast = async function( place, parent ) {
-
-  try {
-
-    const response = await fetch( `https://api.openweathermap.org/data/2.5/forecast?q=${ place }&units=metric&appid=${ key }` );
-    const { list } = await response.json();
-    /**
-     * list is an array of objects, each object has a timestamp property
-     *
-     * timestamp example:
-     *
-     * clouds:
-     * {all: 23}
-     * dt:
-     * 1661958000
-     * dt_txt:
-     * '2022-08-31 15:00:00'
-     * main:
-     * {temp: 18.82, feels_like: 18.12, temp_min: 18.41, temp_max: 18.82, pressure: 1022, …}
-     * pop:
-     * 0.2
-     * rain:
-     * {3h: 0.13}
-     * sys:
-     * {pod: 'd'}
-     * visibility:
-     * 10000
-     * weather:
-     * (1) [{…}]
-     * wind:
-     * {speed: 6.56, deg: 358, gust: 7.38}
-     */
-    displayConditions( list, parent );
-
-  } catch ( error ) { console.error( error ) }
-
-};
-const displayConditions = async function( list, parent ) {
-
-  list.map( timestamp => renderTimestamp( timestamp ) );
-
-};
-const renderTimestamp   = function( timestamp ) {
-
-  const {
-    weather,
-    main,
-    wind: { speed: windSpeed },
-    dt_txt: dateTime,
-  } = timestamp;
-  const {
-    temp: temperature,
-    feels_like: feelsLike,
-    humidity: humidityPercentage,
-  } = main;
-  const weatherDescription      = weather[0].description;
-  const { output, resultNodes } = packResultsToNode(
-    parent,
-    dateTime,
-    weatherDescription,
-    temperature,
-    feelsLike,
-    humidityPercentage,
-    windSpeed
-  );
-
-};
-const packResultsToNode = function( parent, cityName, weatherDescription, temperature, feelsLike, humidityPercentage, windSpeed, dateTime ) {
-
-  const output      = document.createElement( "div" );
-  const resultNodes = [
-    document.createElement( "h2" )
-      .addText( cityName ),
-    document.createElement( "h3" )
-      .addText( weatherDescription ),
-    document.createElement( "h3" )
-      .addText( `${ temperature }°C` ),
-    document.createElement( "h3" )
-      .addText( `Feels like ${ feelsLike }°C` ),
-    document.createElement( "h3" )
-      .addText( `${ humidityPercentage }% humidity` ),
-    document.createElement( "h3" )
-      .addText( `${ windSpeed } m/s wind speed` ),
-    document.createElement( "h3" )
-      .addText( String( dateTime ) ),
-  ];
-
-  return { output, resultNodes };
-
-};
-const createWeatherIcon = function( weather, weatherDescription ) {
-
-  const weatherIcon = document.createElement( "img" );
-  weatherIcon.setAttribute( "src", `https://openweathermap.org/img/w/${ weather[0].icon }.png` );
-  weatherIcon.setAttribute( "alt", weatherDescription );
-
-  return weatherIcon;
-
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (requestForecast);
-
-
-/***/ }),
-
 /***/ "./src/main.js":
 /*!*********************!*\
   !*** ./src/main.js ***!
@@ -2775,7 +2660,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const body    = document.querySelector( "body" )
   .addStyles( _emotion_css__WEBPACK_IMPORTED_MODULE_1__.css`
---color-fg: hsl( 15deg 100% 88% / 75% );
+  --color-fg: hsl( 15deg 100% 88% / 75% );
   --color-fg-muted: hsl( 15deg 100% 88% / 60% );
   --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
   --color-fg-accent: hsl( 200deg 100% 70% / 100% );
@@ -2789,7 +2674,7 @@ const body    = document.querySelector( "body" )
 
   color: var( --color-fg );
 
-  /* font-family: Rubik, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+  font-family: Rubik, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
   background-color: var( --color-bg );
   ` );
@@ -3027,7 +2912,6 @@ submitCurrentButton.addEventListener( "click", event => {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	__webpack_require__("./src/current-weather.js");
-/******/ 	__webpack_require__("./src/forecast.js");
 /******/ 	var __webpack_exports__ = __webpack_require__("./src/main.js");
 /******/ 	
 /******/ })()
