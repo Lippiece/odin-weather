@@ -3,12 +3,11 @@ import "@adipiscing/image-slider";
 import { css } from "@emotion/css";
 
 import requestWeather from "./current-weather.js";
-
-// import requestForecast from "./forecast.js";
+import requestForecast from "./forecast.js";
 
 const body    = document.querySelector( "body" )
   .addStyles( css`
-  --color-fg: hsl( 15deg 100% 88% / 75% );
+--color-fg: hsl( 15deg 100% 88% / 75% );
   --color-fg-muted: hsl( 15deg 100% 88% / 60% );
   --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
   --color-fg-accent: hsl( 200deg 100% 70% / 100% );
@@ -91,6 +90,15 @@ const content = document.querySelector( "#content" )
     }
   }
 
+  #weather-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
   #results {
     display: flex;
     flex-direction: column;
@@ -99,9 +107,10 @@ const content = document.querySelector( "#content" )
     justify-content: center;
   }
 
-  #output {
+  #output-current {
     display: flex;
     flex-direction: column;
+    width: 10em;
 
     font-size: 1.2em;
     font-variant: all-small-caps;
@@ -130,9 +139,36 @@ const content = document.querySelector( "#content" )
     justify-content: center;
 
     & :first-child {
-      color: var( --color-fg-success );
+      color: var( --color-fg-accent );
       font-size: 1.5em;
-      text-shadow: 0 0 0.25em var( --color-fg-success );
+      text-shadow: 0 0 0.25em var( --color-fg-accent );
+    }
+  }
+
+  #output-forecast {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax( 15em, 1fr ) );
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    .timestamp-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+
+      img {
+        width: 6em;
+        height: 6em;
+        /* margin-bottom: -2em; */
+      }
+
+      & :nth-child(2) {
+        color: var( --color-fg-accent );
+        font-size: 1.5em;
+        text-shadow: 0 0 0.25em var( --color-fg-accent );
+      }
     }
   }
 ` );
@@ -156,18 +192,25 @@ const queryInput = document.createElement( "input" )
 queryInput.setAttribute( "type", "text" );
 queryInput.setAttribute( "name", "query" );
 queryInput.setAttribute( "placeholder", "City" );
-const submitCurrentButton = document.createElement( "button" )
-  .addId( "current-button" )
-  .appendTo( form );
-submitCurrentButton.append( "Now" );
 
-/* const submitForecastButton = document.createElement( "button" )
-     .addId( "forecast-button" )
-     .appendTo( form );
-   submitForecastButton.append( "Forecast" ); */
-const weatherContainer = document.createElement( "div" )
+// remove spaces from query
+queryInput.addEventListener( "input", event => {
+
+  event.target.value = event.target.value.replace( /\s/g, "" );
+
+} );
+const submitCurrentButton  = document.createElement( "button" )
+  .addId( "current-button" )
+  .appendTo( form )
+  .chainAppend( "Now" );
+const submitForecastButton = document.createElement( "button" )
+  .addId( "forecast-button" )
+  .appendTo( form )
+  .chainAppend( "Forecast" );
+const weatherContainer     = document.createElement( "div" )
   .addId( "weather-container" )
   .appendTo( content );
+
 // current weather
 const outputCurrent           = document.createElement( "div" )
   .addId( "output-current" )
@@ -178,6 +221,7 @@ const weatherIconCurrent      = document.createElement( "div" )
 const detailsContainerCurrent = document.createElement( "div" )
   .addId( "current-details" )
   .appendTo( outputCurrent );
+
 // forecast
 const outputForecast = document.createElement( "div" )
   .addId( "output-forecast" )
@@ -189,9 +233,9 @@ submitCurrentButton.addEventListener( "click", event => {
 
 } );
 
-// submitForecastButton.addEventListener( "click", event => {
+submitForecastButton.addEventListener( "click", event => {
 
-/*   event.preventDefault();
-     requestForecast( queryInput.value, weatherContainer ); */
+  event.preventDefault();
+  requestForecast( queryInput.value, weatherContainer );
 
-// } );
+} );

@@ -1349,6 +1349,76 @@ var weakMemoize = function weakMemoize(func) {
 
 /***/ }),
 
+/***/ "./node_modules/@adipiscing/image-slider/src/main/image.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@adipiscing/image-slider/src/main/image.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Image)
+/* harmony export */ });
+class Image {
+
+  toggleCurrentImage( image ) {
+
+    image.classList.toggle( css( {
+      height     : "30em",
+      marginLeft : "2em",
+      marginRight: "2em",
+    } ) );
+
+  }
+  removeCurrentIfPresent( image ) {
+
+    if ( image.classList.contains( css( {
+      height     : "30em",
+      marginLeft : "2em",
+      marginRight: "2em",
+    } ) ) ) { this.toggleCurrentImage( image ) }
+
+  }
+  resetCurrentImage() {
+
+    for ( const image of this.slider.div.children ) { this.removeCurrentIfPresent( image ) }
+
+  }
+  addEventListeners( ) {
+
+    this.img.addEventListener( "click", event => {
+
+      this.resetCurrentImage( this.slider );
+      this.toggleCurrentImage( event.target );
+      this.slider.div.scrollLeft = event.target.offsetLeft - this.slider.div.offsetLeft;
+
+    } );
+
+  }
+  constructor( source, slider ) {
+
+    this.img = document.createElement( "img" );
+    this.img
+      .addStyles( css( {
+        cursor    : "pointer",
+        height    : "20em",
+        transition: "all 0.5s ease",
+				 } ) )
+      .src = source;
+    slider.div.append( this.img );
+    this.slider = slider;
+    this.source = source;
+    this.addEventListeners();
+
+    return this.img;
+
+  }
+
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/@adipiscing/image-slider/src/main/main.js":
 /*!****************************************************************!*\
   !*** ./node_modules/@adipiscing/image-slider/src/main/main.js ***!
@@ -1360,25 +1430,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ ImageSlider)
 /* harmony export */ });
 /* harmony import */ var _emotion_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @emotion/css */ "./node_modules/@emotion/css/dist/emotion-css.esm.js");
+/* harmony import */ var _image_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./image.js */ "./node_modules/@adipiscing/image-slider/src/main/image.js");
 
 
-Element.prototype.appendTo = function( parent ) {
+
+
+Element.prototype.appendTo = function appendTo( parent ) {
 
   parent.append( this );
 
   return this;
 
 };
-Element.prototype.addId    = function( id ) {
+Element.prototype.addId    = function addId( id ) {
 
   this.id = id;
 
   return this;
 
 };
-Element.prototype.addStyles = function( styles ) {
+Element.prototype.addStyles   = function addStyles( styles ) {
 
   typeof styles === "object" ? this.classList.add( ...styles ) : this.classList.add( styles );
+
+  return this;
+
+};
+Element.prototype.chainAppend = function chainAppend( ...elements ) {
+
+  elements.map( element => this.append( element ) ) || this.append( ...elements );
 
   return this;
 
@@ -1417,7 +1497,7 @@ class ImageSlider {
 
     for ( const source of images ) {
 
-      new Image( source, this )
+      new _image_js__WEBPACK_IMPORTED_MODULE_1__["default"]( source, this )
         .addId( `image-${ images.indexOf( source ) + 1 }` );
 
     }
@@ -1455,62 +1535,7 @@ class ImageSlider {
 
 }
 
-class Image {
-
-  toggleCurrentImage( image ) {
-
-    image.classList.toggle( (0,_emotion_css__WEBPACK_IMPORTED_MODULE_0__.css)( {
-      height     : "30em",
-      marginLeft : "2em",
-      marginRight: "2em",
-    } ) );
-
-  }
-  removeCurrentIfPresent( image ) {
-
-    if ( image.classList.contains( (0,_emotion_css__WEBPACK_IMPORTED_MODULE_0__.css)( {
-      height     : "30em",
-      marginLeft : "2em",
-      marginRight: "2em",
-    } ) ) ) { this.toggleCurrentImage( image ) }
-
-  }
-  resetCurrentImage() {
-
-    for ( const image of this.slider.div.children ) { this.removeCurrentIfPresent( image ) }
-
-  }
-  addEventListeners( ) {
-
-    this.img.addEventListener( "click", event => {
-
-      this.resetCurrentImage( this.slider );
-      this.toggleCurrentImage( event.target );
-      this.slider.div.scrollLeft = event.target.offsetLeft - this.slider.div.offsetLeft;
-
-    } );
-
-  }
-  constructor( source, slider ) {
-
-    this.img = document.createElement( "img" );
-    this.img
-      .addStyles( (0,_emotion_css__WEBPACK_IMPORTED_MODULE_0__.css)( {
-        cursor    : "pointer",
-        height    : "20em",
-        transition: "all 0.5s ease",
-				 } ) )
-      .src = source;
-    slider.div.append( this.img );
-    this.slider = slider;
-    this.source = source;
-    this.addEventListeners();
-
-    return this.img;
-
-  }
-
-}
+console.debug( "Module loaded: ImageSlider" );
 
 
 /***/ }),
@@ -2594,9 +2619,9 @@ const displayConditions = async function( response, parent ) {
  */
 const packResultsToNode = function( parent, cityName, weatherIconElement, weatherDescription, temperature, feelsLike, humidityPercentage, windSpeed ) {
 
-  const outputCurrent = document.createElement( "div" )
+  const outputCurrent    = document.createElement( "div" )
     .addId( "output-current" );
-  const resultStrings = [
+  const resultStrings    = [
     String( cityName ),
     String( weatherDescription ),
     `Temperature: ${ temperature }°C`,
@@ -2604,14 +2629,8 @@ const packResultsToNode = function( parent, cityName, weatherIconElement, weathe
     `Humidity: ${ humidityPercentage }%`,
     `Wind speed: ${ windSpeed }m/s`,
   ];
-  const resultNodes   = resultStrings.map( string => {
-
-    const result = document.createElement( "p" );
-    result.append( string );
-
-    return result;
-
-  } );
+  const resultNodes      = resultStrings.map( string => document.createElement( "p" )
+    .chainAppend( string ) );
   const detailsContainer = document.createElement( "div" )
     .addId( "current-details" );
   detailsContainer.replaceChildren( ...resultNodes );
@@ -2640,6 +2659,123 @@ const createWeatherIcon = function( weather, weatherDescription ) {
 
 /***/ }),
 
+/***/ "./src/forecast.js":
+/*!*************************!*\
+  !*** ./src/forecast.js ***!
+  \*************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const key = "1c9287e01c2d0b797dcff3a182cab997";
+/**
+ * It fetches the forecast data from the OpenWeatherMap API,
+ * extracts the data we need, and packs it into the container
+ *
+ * @param query - the city name
+ * @param container - the container where the forecast will be displayed
+ */
+const requestForecast = async( query, container ) => {
+
+  try {
+
+    const response = await fetch( `https://api.openweathermap.org/data/2.5/forecast?q=${ query }&units=metric&appid=${ key }` );
+    const { list } = await response.json();
+
+    packToContainer( container, extractData( list ) );
+
+  } catch ( error ) { console.error( error ) }
+
+};
+const extractData = list => list.map( ( {
+  dt_txt: dateTime,
+  main:{ temp:temperature, feels_like: feelsLike, temp_min: temperatureMin, temp_max: temperatureMax, pressure, humidity },
+  weather:[{ description, icon }],
+  wind:{ speed },
+  clouds: { all: cloudiness },
+  pop: rainProbability,
+  rain = "no data",
+  snow = "no data",
+} ) => ( {
+  cloudiness,
+  dateTime,
+  description,
+  feelsLike,
+  humidity,
+  icon,
+  pressure,
+  rain: { "3h": rain = "no data" },
+  rainProbability,
+  snow: { "3h": snow = "no data" },
+  speed,
+  temperature,
+  temperatureMax,
+  temperatureMin,
+} ) );
+/**
+ * It takes a container and a data object, and then replaces
+ * the container's children with a new div that contains the data
+ *
+ * @param container - the container element that will hold the forecast
+ * @param data - an array of objects, each object containing the weather data for a specific time stamp
+ */
+const packToContainer = ( container, data ) => {
+
+  const outputForecast = document.createElement( "div" )
+    .addId( "output-forecast" );
+  data.map( timeStamp => displayTimestamp( timeStamp, outputForecast ) );
+  container.querySelector( "#output-forecast" )
+    .replaceWith( outputForecast );
+
+};
+const displayTimestamp = function displayTimestamp( timeStamp, outputForecast ) {
+
+  const container     = document.createElement( "div" )
+  .appendTo( outputForecast )
+  container.classList.add( "timestamp-container" );
+  const icon          = createWeatherIcon( timeStamp.icon, timeStamp.description )
+    .appendTo( container );
+  const resultStrings = [
+    String( timeStamp.dateTime.replace() ),
+    `Description: ${ String( timeStamp.description ) }`,
+    `Temperature: ${ String( timeStamp.temperature ) }`,
+    `Feels like: ${ String( timeStamp.feelsLike ) }`,
+    `Temperature range: ${ String( timeStamp.temperatureMin ) }-${ String( timeStamp.temperatureMax ) }`,
+    `Pressure: ${ String( timeStamp.pressure ) }`,
+    `Humidity: ${ String( timeStamp.humidity ) }`,
+    `Wind speed: ${ String( timeStamp.speed ) }`,
+    `Cloudiness: ${ String( timeStamp.cloudiness ) }`,
+    `Rain probability: ${ String( timeStamp.rainProbability ) }`,
+    `3-hours rain volume ${ String( timeStamp.rain["3h"] ) }`,
+    `3-hours snow volume ${ String( timeStamp.snow["3h"] ) }`,
+  ];
+  resultStrings.map( string => {
+
+    if ( string.includes( "no data" ) ) return;
+
+    return document.createElement( "p" )
+      .appendTo( container )
+      .chainAppend( string );
+
+  } );
+
+};
+const createWeatherIcon = function createWeatherIcon( icon, description ) {
+
+  const weatherIconElement = document.createElement( "img" );
+  weatherIconElement.src   = `http://openweathermap.org/img/wn/${ icon }@2x.png`;
+  weatherIconElement.alt   = description;
+
+  return weatherIconElement;
+
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (requestForecast);
+
+
+/***/ }),
+
 /***/ "./src/main.js":
 /*!*********************!*\
   !*** ./src/main.js ***!
@@ -2650,17 +2786,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _adipiscing_image_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @adipiscing/image-slider */ "./node_modules/@adipiscing/image-slider/src/main/main.js");
 /* harmony import */ var _emotion_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @emotion/css */ "./node_modules/@emotion/css/dist/emotion-css.esm.js");
 /* harmony import */ var _current_weather_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./current-weather.js */ "./src/current-weather.js");
+/* harmony import */ var _forecast_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./forecast.js */ "./src/forecast.js");
 
 
 
 
 
 
-// import requestForecast from "./forecast.js";
 
 const body    = document.querySelector( "body" )
   .addStyles( _emotion_css__WEBPACK_IMPORTED_MODULE_1__.css`
-  --color-fg: hsl( 15deg 100% 88% / 75% );
+--color-fg: hsl( 15deg 100% 88% / 75% );
   --color-fg-muted: hsl( 15deg 100% 88% / 60% );
   --color-fg-subtle: hsl( 15deg 100% 88% / 45% );
   --color-fg-accent: hsl( 200deg 100% 70% / 100% );
@@ -2743,6 +2879,15 @@ const content = document.querySelector( "#content" )
     }
   }
 
+  #weather-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
   #results {
     display: flex;
     flex-direction: column;
@@ -2751,9 +2896,10 @@ const content = document.querySelector( "#content" )
     justify-content: center;
   }
 
-  #output {
+  #output-current {
     display: flex;
     flex-direction: column;
+    width: 10em;
 
     font-size: 1.2em;
     font-variant: all-small-caps;
@@ -2782,9 +2928,36 @@ const content = document.querySelector( "#content" )
     justify-content: center;
 
     & :first-child {
-      color: var( --color-fg-success );
+      color: var( --color-fg-accent );
       font-size: 1.5em;
-      text-shadow: 0 0 0.25em var( --color-fg-success );
+      text-shadow: 0 0 0.25em var( --color-fg-accent );
+    }
+  }
+
+  #output-forecast {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax( 15em, 1fr ) );
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    .timestamp-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+
+      img {
+        width: 6em;
+        height: 6em;
+        /* margin-bottom: -2em; */
+      }
+
+      & :nth-child(2) {
+        color: var( --color-fg-accent );
+        font-size: 1.5em;
+        text-shadow: 0 0 0.25em var( --color-fg-accent );
+      }
     }
   }
 ` );
@@ -2808,18 +2981,25 @@ const queryInput = document.createElement( "input" )
 queryInput.setAttribute( "type", "text" );
 queryInput.setAttribute( "name", "query" );
 queryInput.setAttribute( "placeholder", "City" );
-const submitCurrentButton = document.createElement( "button" )
-  .addId( "current-button" )
-  .appendTo( form );
-submitCurrentButton.append( "Now" );
 
-/* const submitForecastButton = document.createElement( "button" )
-     .addId( "forecast-button" )
-     .appendTo( form );
-   submitForecastButton.append( "Forecast" ); */
-const weatherContainer = document.createElement( "div" )
+// remove spaces from query
+queryInput.addEventListener( "input", event => {
+
+  event.target.value = event.target.value.replace( /\s/g, "" );
+
+} );
+const submitCurrentButton  = document.createElement( "button" )
+  .addId( "current-button" )
+  .appendTo( form )
+  .chainAppend( "Now" );
+const submitForecastButton = document.createElement( "button" )
+  .addId( "forecast-button" )
+  .appendTo( form )
+  .chainAppend( "Forecast" );
+const weatherContainer     = document.createElement( "div" )
   .addId( "weather-container" )
   .appendTo( content );
+
 // current weather
 const outputCurrent           = document.createElement( "div" )
   .addId( "output-current" )
@@ -2830,6 +3010,7 @@ const weatherIconCurrent      = document.createElement( "div" )
 const detailsContainerCurrent = document.createElement( "div" )
   .addId( "current-details" )
   .appendTo( outputCurrent );
+
 // forecast
 const outputForecast = document.createElement( "div" )
   .addId( "output-forecast" )
@@ -2841,12 +3022,12 @@ submitCurrentButton.addEventListener( "click", event => {
 
 } );
 
-// submitForecastButton.addEventListener( "click", event => {
+submitForecastButton.addEventListener( "click", event => {
 
-/*   event.preventDefault();
-     requestForecast( queryInput.value, weatherContainer ); */
+  event.preventDefault();
+  (0,_forecast_js__WEBPACK_IMPORTED_MODULE_3__["default"])( queryInput.value, weatherContainer );
 
-// } );
+} );
 
 
 /***/ })
@@ -2912,6 +3093,7 @@ submitCurrentButton.addEventListener( "click", event => {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	__webpack_require__("./src/current-weather.js");
+/******/ 	__webpack_require__("./src/forecast.js");
 /******/ 	var __webpack_exports__ = __webpack_require__("./src/main.js");
 /******/ 	
 /******/ })()

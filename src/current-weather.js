@@ -60,9 +60,9 @@ const displayConditions = async function( response, parent ) {
  */
 const packResultsToNode = function( parent, cityName, weatherIconElement, weatherDescription, temperature, feelsLike, humidityPercentage, windSpeed ) {
 
-  const outputCurrent = document.createElement( "div" )
+  const outputCurrent    = document.createElement( "div" )
     .addId( "output-current" );
-  const resultStrings = [
+  const resultStrings    = [
     String( cityName ),
     String( weatherDescription ),
     `Temperature: ${ temperature }°C`,
@@ -70,14 +70,8 @@ const packResultsToNode = function( parent, cityName, weatherIconElement, weathe
     `Humidity: ${ humidityPercentage }%`,
     `Wind speed: ${ windSpeed }m/s`,
   ];
-  const resultNodes   = resultStrings.map( string => {
-
-    const result = document.createElement( "p" );
-    result.append( string );
-
-    return result;
-
-  } );
+  const resultNodes      = resultStrings.map( string => document.createElement( "p" )
+    .chainAppend( string ) );
   const detailsContainer = document.createElement( "div" )
     .addId( "current-details" );
   detailsContainer.replaceChildren( ...resultNodes );
