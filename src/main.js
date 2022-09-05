@@ -147,7 +147,7 @@ const content = document.querySelector( "#content" )
 
   #output-forecast {
     display: grid;
-    grid-template-columns: repeat( auto-fit, minmax( 15em, 1fr ) );
+    grid-template-columns: repeat( auto-fit, minmax( 16em, 1fr ) );
     gap: 1em;
     align-items: center;
     justify-content: center;
@@ -157,17 +157,32 @@ const content = document.querySelector( "#content" )
       display: flex;
       flex-direction: column;
       gap: 0.5em;
+      padding: 0.5em;
+
+      border: 1px solid var( --color-fg-subtle );
+      border-radius: 0.5em;
 
       img {
+        align-self: center;
         width: 6em;
         height: 6em;
-        /* margin-bottom: -2em; */
       }
 
       & :nth-child(2) {
         color: var( --color-fg-accent );
         font-size: 1.5em;
+        text-align: center;
         text-shadow: 0 0 0.25em var( --color-fg-accent );
+      }
+
+      & :nth-child(3) {
+        font-size: 1.5em;
+        text-align: center;
+      }
+
+      & > * {
+        font-size: 1.2em;
+        font-variant: all-small-caps;
       }
     }
   }

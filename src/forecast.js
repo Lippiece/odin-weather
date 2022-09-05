@@ -67,7 +67,8 @@ const displayTimestamp = function displayTimestamp( timeStamp, outputForecast ) 
   const icon          = createWeatherIcon( timeStamp.icon, timeStamp.description )
     .appendTo( container );
   const resultStrings = [
-    String( timeStamp.dateTime.replace() ),
+    String( timeStamp.dateTime.split( " " )[ 0 ] ),
+    String( timeStamp.dateTime.split( " " )[ 1 ] ),
     `Description: ${ String( timeStamp.description ) }`,
     `Temperature: ${ String( timeStamp.temperature ) }`,
     `Feels like: ${ String( timeStamp.feelsLike ) }`,
